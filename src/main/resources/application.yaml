@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: safeai
+  ai:
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        model: nomic-embed-text
+      chat:
+        options:
+          model: qwen3:8b
+    vectorstore:
+      chroma:
+        client:
+          host: http://localhost
+          port: 8085
+        initialize-schema: true
+server:
+  port: 8083

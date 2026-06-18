@@ -58,7 +58,12 @@ public class JobMatchService {
 
     {
       "professionalSummary": "",
-      "keySkills": [],
+      "keySkills": [
+      	{
+      		"title": "",
+      		"tech": []
+      	}
+      ],
       "experience": [
         {
           "company": "",

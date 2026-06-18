@@ -1,9 +1,11 @@
 package com.safepay.safeai.services;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.List;
 
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.reader.ExtractedTextFormatter;
@@ -45,6 +47,29 @@ public class IngestionService {
 
 		List<Document> chunks = splitter.apply(docs);
 
+		vectorStore.add(chunks);
+	}
+
+	public void ingestUrl(String url) {
+
+		// EXTRACT
+		org.jsoup.nodes.Document html = null;
+		try {
+			html = Jsoup.connect(url).get();
+		}
+		catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+		String text = html.body().text();
+
+		Document doc = new Document(text);
+		doc.getMetadata().put("source", url);
+
+		// TRANSFORM
+		TokenTextSplitter splitter = new TokenTextSplitter();
+		List<Document> chunks = splitter.split(doc);
+
+		// LOAD
 		vectorStore.add(chunks);
 	}
 }

@@ -2,14 +2,13 @@ spring:
   application:
     name: safeai
   ai:
-    openai:
-      api-key: ${OPENAI_API_KEY}
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        model: nomic-embed-text
       chat:
         options:
-          model: gpt-4o-mini
-      embedding:
-        options:
-          model: text-embedding-3-small
+          model: qwen3:8b
     vectorstore:
       chroma:
         client:

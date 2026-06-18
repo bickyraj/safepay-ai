@@ -38,16 +38,26 @@ public class IngestionService {
 		List<Document> docs = pdfReader.read();
 
 		TokenTextSplitter splitter = TokenTextSplitter.builder()
-				.withChunkSize(1000)
-				.withMinChunkSizeChars(400)
-				.withMinChunkLengthToEmbed(10)
-				.withMaxNumChunks(5000)
+				.withChunkSize(500)
+				.withMinChunkSizeChars(200)
+				.withMinChunkLengthToEmbed(50)
+				.withMaxNumChunks(1000)
 				.withKeepSeparator(true)
 				.build();
 
 		List<Document> chunks = splitter.apply(docs);
 
-		vectorStore.add(chunks);
+		int batchSize = 20;
+		for (int i = 0; i < chunks.size(); i += batchSize) {
+			List<Document> batch = chunks.subList(i, Math.min(i + batchSize, chunks.size()));
+			vectorStore.add(batch);
+
+			try {
+				Thread.sleep(1000); // throttle between batches
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		}
 	}
 
 	public void ingestUrl(String url) {

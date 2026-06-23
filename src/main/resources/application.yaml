@@ -9,6 +9,13 @@ spring:
           connections:
             ims-server:
               url: http://localhost:8087
+    ollama:
+      base-url: http://localhost:11434
+      embedding:
+        model: nomic-embed-text
+      chat:
+        options:
+          model: qwen3:8b
     openai:
       api-key: ${OPENAI_API_KEY}
       chat:

@@ -24,7 +24,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.ai:spring-ai-starter-mcp-client'
-//    implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
+    implementation 'org.springframework.ai:spring-ai-starter-model-ollama'
     implementation 'org.springframework.ai:spring-ai-starter-model-openai'
     implementation 'org.jsoup:jsoup:1.7.2'
     implementation 'org.springframework.ai:spring-ai-starter-vector-store-chroma'

@@ -2,6 +2,13 @@ spring:
   application:
     name: safeai
   ai:
+    mcp:
+      client:
+        enabled: true
+        sse:
+          connections:
+            ims-server:
+              url: http://localhost:8087
     openai:
       api-key: ${OPENAI_API_KEY}
       chat:

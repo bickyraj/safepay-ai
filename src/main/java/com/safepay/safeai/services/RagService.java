@@ -5,6 +5,7 @@ import java.util.List;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Service;
@@ -12,11 +13,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class RagService {
+
 	private final VectorStore vectorStore;
 	private final ChatClient chatClient;
-
-	public String ask(String question) {
-
+	public String ask(String question, String conversationId) {
 		List<Document> context = vectorStore.similaritySearch(question);
 
 		String contextText = context.stream()
@@ -25,7 +25,10 @@ public class RagService {
 
 		return chatClient.prompt()
 				.system("Answer only using the provided context.")
-				.user(u -> u.text(question + "\n\nContext:\n" + contextText))
+				.user(question + "\n\nContext:\n" + contextText)
+				.advisors(advisor -> advisor
+						.param(ChatMemory.CONVERSATION_ID, conversationId)
+				)
 				.call()
 				.content();
 	}

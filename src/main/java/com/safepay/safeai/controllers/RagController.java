@@ -2,6 +2,7 @@ package com.safepay.safeai.controllers;
 
 import java.nio.file.Path;
 
+import com.safepay.safeai.controllers.request.ChatRequestDTO;
 import com.safepay.safeai.services.IngestionService;
 import com.safepay.safeai.services.RagService;
 import lombok.RequiredArgsConstructor;
@@ -24,8 +25,9 @@ public class RagController {
 	}
 
 	@PostMapping("/ask")
-	public ResponseEntity<String> ask(@RequestBody String question) {
-		return ResponseEntity.ok(ragService.ask(question));
+	public ResponseEntity<String> ask(@RequestBody ChatRequestDTO chatRequestDTO) {
+		return ResponseEntity.ok(ragService
+				.ask(chatRequestDTO.getQuestion(), chatRequestDTO.getConversationId()));
 	}
 
 	@PostMapping("/ingesturl")

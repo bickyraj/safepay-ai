@@ -3,6 +3,8 @@ package com.safepay.safeai.configurations;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
+import org.springframework.ai.chat.memory.ChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.mcp.SyncMcpToolCallbackProvider;
 import org.springframework.ai.ollama.OllamaChatModel;
@@ -27,9 +29,12 @@ public class ChatConfig {
 	}
 
 	@Bean
-	ChatClient chatClient(@Qualifier("myOpenAiChatModel") ChatModel chatModel, SyncMcpToolCallbackProvider toolCallbackProvider) {
+	ChatClient chatClient(@Qualifier("myOpenAiChatModel") ChatModel chatModel,
+						  SyncMcpToolCallbackProvider toolCallbackProvider, ChatMemory chatMemory) {
 		return ChatClient
 				.builder(chatModel)
+				.defaultSystem("You are a helpful IMS assistant.")
+				.defaultAdvisors(MessageChatMemoryAdvisor.builder(chatMemory).build())
 				.defaultToolCallbacks(toolCallbackProvider.getToolCallbacks())
 				.build();
 	}
